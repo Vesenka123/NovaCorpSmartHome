@@ -1,0 +1,145 @@
+﻿<Window x:Class="NovaCorpSmartHome.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NovaCorpSmartHome"
+        mc:Ignorable="d"
+        Title="NovaCorp — Умный дом"
+        Height="720" Width="1280"
+        WindowStyle="None"
+        MinHeight="600" MinWidth="1024"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen">
+
+    <Border CornerRadius="16" Background="{StaticResource BgColor}" Margin="0">
+        <Border.Effect>
+            <DropShadowEffect Color="#2D3748" Opacity="0.15" BlurRadius="24" ShadowDepth="4"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <!-- Шапка -->
+            <Border Grid.Row="0" 
+                    Background="{StaticResource PanelColor}" 
+                    BorderBrush="{StaticResource BorderLight}" 
+                    BorderThickness="0,0,0,1"
+                    CornerRadius="16,16,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Логотип -->
+                    <StackPanel Grid.Column="0" 
+                                Orientation="Horizontal" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Center"
+                                Margin="24,0,0,0">
+                        <Border Width="40" Height="40"
+                        CornerRadius="10"
+                        ClipToBounds="True">
+                            <Border.OpacityMask>
+                                <VisualBrush>
+                                    <VisualBrush.Visual>
+                                        <Border Background="Black" CornerRadius="10" 
+                        Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Border}}" 
+                        Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Border}}"/>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Border.OpacityMask>
+                            <Image Source="/Resources/logo.png"/>
+                        </Border>
+                        <TextBlock Text="NovaCorp" 
+                                   FontSize="20" FontWeight="SemiBold" 
+                                   Foreground="{StaticResource TextColor}" 
+                                   VerticalAlignment="Center" 
+                                   Margin="12,0,0,0"/>
+                    </StackPanel>
+
+                    <!-- Заголовок -->
+                    <TextBlock Grid.Column="1" 
+                               Text="УМНЫЙ ДОМ" 
+                               FontSize="18" 
+                               FontWeight="Light"
+                               Foreground="{StaticResource TextSecondaryColor}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+
+                    <!-- Кнопки управления -->
+                    <StackPanel Grid.Column="2" 
+                                Orientation="Horizontal"
+                                Margin="0,0,16,0">
+                        <Button x:Name="btnMinimize"
+                                Width="40" Height="40"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Click="btnMinimize_Click">
+                            <TextBlock Text="─" 
+                                       FontSize="20" 
+                                       Foreground="{StaticResource TextSecondaryColor}"/>
+                        </Button>
+
+                        <Button x:Name="btnMaximize"
+                                Width="40" Height="40"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Click="btnMaximize_Click">
+                            <TextBlock Text="□" 
+                                       FontSize="16" 
+                                       Foreground="{StaticResource TextSecondaryColor}"/>
+                        </Button>
+
+                        <Button x:Name="btnClose"
+                                Width="40" Height="40"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Click="btnClose_Click">
+                            <TextBlock Text="✕" 
+                                       FontSize="16" 
+                                       Foreground="{StaticResource ErrorColor}"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Фрейм -->
+            <Frame x:Name="frmMain" Grid.Row="1" NavigationUIVisibility="Hidden"/>
+
+            <!-- Подвал -->
+            <Border Grid.Row="2" 
+                    Background="{StaticResource PanelColor}" 
+                    BorderBrush="{StaticResource BorderLight}" 
+                    BorderThickness="0,1,0,0" 
+                    CornerRadius="0,0,16,16">
+                <Grid>
+                    <TextBlock Text="© 2026 NovaCorp Smart Home — Все права защищены" 
+                               FontSize="12" 
+                               Foreground="{StaticResource TextSecondaryColor}"
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Center"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Margin="0,0,16,0">
+                        <Ellipse Width="8" Height="8" 
+                                 Fill="#10B981"
+                            Margin="0,2,4,0"/>
+                            <TextBlock Text="Система работает"
+                                   FontSize="10"
+                                   Foreground="{StaticResource TextSecondaryColor}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

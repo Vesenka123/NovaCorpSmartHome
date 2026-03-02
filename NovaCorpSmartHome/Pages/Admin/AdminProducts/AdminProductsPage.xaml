@@ -1,0 +1,517 @@
+﻿<Page x:Class="NovaCorpSmartHome.Pages.Admin.AdminProducts.AdminProductsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:NovaCorpSmartHome.Pages.Admin.AdminProducts"
+      mc:Ignorable="d" 
+      Title="Товары и услуги"
+      Background="{StaticResource BgColor}"
+      Loaded="Page_Loaded">
+
+    <Grid Margin="25">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя панель с заголовком и кнопкой назад -->
+        <Border Grid.Row="0"
+                Background="White"
+                CornerRadius="12"
+                Padding="15"
+                Margin="0,0,0,20"
+                Effect="{StaticResource CardShadow}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Background="{StaticResource AccentColor}"
+                        Width="40" Height="40"
+                        CornerRadius="10"
+                        Margin="0,0,15,0">
+                    <TextBlock Text="🛒" 
+                               FontSize="20"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="УПРАВЛЕНИЕ ТОВАРАМИ И УСЛУГАМИ"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="#1E293B"/>
+                    <TextBlock Text="Добавление, редактирование и удаление товаров в каталоге"
+                               FontSize="12"
+                               Foreground="#64748B"/>
+                </StackPanel>
+
+                <Button Grid.Column="2"
+                        x:Name="btnBack"
+                        Content="← Назад"
+                        Style="{StaticResource btnSecondary}"
+                        Height="36"
+                        Width="80"
+                        FontSize="11"
+                        Click="btnBack_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Основное содержимое -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="380"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ЛЕВАЯ КОЛОНКА: список товаров -->
+            <Border Grid.Column="0"
+                    Background="White"
+                    CornerRadius="12"
+                    Padding="15"
+                    Effect="{StaticResource CardShadow}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Заголовок каталога -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
+                        <Border Background="{StaticResource AccentColor}"
+                                Width="28" Height="28"
+                                CornerRadius="6"
+                                Margin="0,0,8,0">
+                            <TextBlock Text="📋" 
+                                       FontSize="14"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="КАТАЛОГ"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="#1E293B"
+                                   VerticalAlignment="Center"/>
+                        <Border Background="#E2E8F0" Height="22"
+                                CornerRadius="10"
+                                Padding="6,2"
+                                Margin="8,0,0,0">
+                            <TextBlock x:Name="txtProductsCount"  VerticalAlignment="Center"
+                                       Text="0"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       Foreground="#1E293B"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Только фильтр по типу (без категорий) -->
+                    <Border Grid.Row="1"
+                            Background="#F8FAFC"
+                            CornerRadius="8"
+                            Padding="10"
+                            Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Фильтр по типу:" FontSize="10" Foreground="#64748B" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="cmbTypeFilter"
+                                      Height="30"
+                                      FontSize="11"
+                                      SelectionChanged="cmbTypeFilter_SelectionChanged">
+                                <ComboBoxItem Content="Все типы" IsSelected="True"/>
+                                <ComboBoxItem Content="Товар"/>
+                                <ComboBoxItem Content="Услуга"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Таблица товаров -->
+                    <DataGrid x:Name="dgProducts"
+                              Grid.Row="2"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              FontSize="11"
+                              HeadersVisibility="Column"
+                              BorderThickness="1"
+                              BorderBrush="#E2E8F0"
+                              Background="White"
+                              RowHeight="32"
+                              AlternatingRowBackground="#F8FAFC"
+                              SelectionMode="Single"
+                              SelectionChanged="dgProducts_SelectionChanged">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#F1F5F9"/>
+                                <Setter Property="Foreground" Value="#1E293B"/>
+                                <Setter Property="FontSize" Value="10"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Height" Value="28"/>
+                                <Setter Property="Padding" Value="6"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Тип" Width="55">
+                                <DataGridTextColumn.Binding>
+                                    <Binding Path="Type"/>
+                                </DataGridTextColumn.Binding>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontWeight" Value="SemiBold"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Type}" Value="Товар">
+                                                <Setter Property="TextBlock.Foreground" Value="#2563EB"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Услуга">
+                                                <Setter Property="TextBlock.Foreground" Value="#10B981"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Цена" Binding="{Binding Price, StringFormat={}{0:N0} ₽}" Width="70"/>
+                            <DataGridTextColumn Header="Статус" Width="50">
+                                <DataGridTextColumn.Binding>
+                                    <Binding Path="IsActive"/>
+                                </DataGridTextColumn.Binding>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.Text" Value="✓"/>
+                                        <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+                                        <Setter Property="TextBlock.Foreground" Value="#10B981"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsActive}" Value="False">
+                                                <Setter Property="TextBlock.Text" Value="✗"/>
+                                                <Setter Property="TextBlock.Foreground" Value="#EF4444"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Кнопка добавления -->
+                    <Button Grid.Row="3"
+                            x:Name="btnAddNew"
+                            Content="➕ Добавить новый товар"
+                            Style="{StaticResource btnPrimary}"
+                            Height="36"
+                            FontSize="11"
+                            Margin="0,12,0,0"
+                            Click="btnAddNew_Click"/>
+                </Grid>
+            </Border>
+
+            <!-- ПРАВАЯ КОЛОНКА: форма редактирования -->
+            <Border Grid.Column="2"
+                    Background="White"
+                    CornerRadius="12"
+                    Padding="20"
+                    Effect="{StaticResource CardShadow}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- Заголовок формы -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                            <Border Background="{StaticResource AccentColor}"
+                                    Width="28" Height="28"
+                                    CornerRadius="6"
+                                    Margin="0,0,8,0">
+                                <TextBlock Text="✏️" 
+                                           FontSize="14"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock x:Name="txtFormTitle" 
+                                       Text="Добавление нового товара"
+                                       FontSize="16" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="#1E293B"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Индикатор выбранного товара -->
+                        <Border x:Name="borderSelectedInfo"
+                                Background="#F0F9FF"
+                                CornerRadius="6"
+                                Padding="8"
+                                Margin="0,0,0,15"
+                                Visibility="Collapsed">
+                            <TextBlock x:Name="txtSelectedInfo" 
+                                       FontSize="11"
+                                       Foreground="{StaticResource AccentColor}"/>
+                        </Border>
+
+                        <!-- Поля формы -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Название -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" 
+                                       Text="Название*" 
+                                       FontSize="12" 
+                                       FontWeight="SemiBold"
+                                       Foreground="#1E293B"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,10"/>
+                            <Border Grid.Row="0" Grid.Column="1"
+                                    Background="#F8FAFC"
+                                    BorderBrush="#E2E8F0"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Height="38"
+                                    Margin="0,0,0,10">
+                                <TextBox x:Name="txtName" 
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         FontSize="13"
+                                         Padding="10,0"
+                                         VerticalAlignment="Center"
+                                         TextChanged="FormField_TextChanged"/>
+                            </Border>
+
+                            <!-- Описание -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" 
+                                       Text="Описание" 
+                                       FontSize="12" 
+                                       FontWeight="SemiBold"
+                                       Foreground="#1E293B"
+                                       VerticalAlignment="Top"
+                                       Margin="0,0,10,10"/>
+                            <Border Grid.Row="1" Grid.Column="1"
+                                    Background="#F8FAFC"
+                                    BorderBrush="#E2E8F0"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Height="35"
+                                    Margin="0,0,0,10">
+                                <TextBox x:Name="txtDescription" 
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         FontSize="13"
+                                         Padding="10,6"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         VerticalAlignment="Top"/>
+                            </Border>
+
+                            <!-- Цена -->
+                            <TextBlock Grid.Row="2" Grid.Column="0" 
+                                       Text="Цена (₽)*" 
+                                       FontSize="12" 
+                                       FontWeight="SemiBold"
+                                       Foreground="#1E293B"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,10"/>
+                            <Border Grid.Row="2" Grid.Column="1"
+                                    Background="#F8FAFC"
+                                    BorderBrush="#E2E8F0"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Height="38"
+                                    Margin="0,0,0,10">
+                                <TextBox x:Name="txtPrice" 
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         FontSize="13"
+                                         Padding="10,0"
+                                         VerticalAlignment="Center"
+                                         PreviewTextInput="txtPrice_PreviewTextInput"
+                                         TextChanged="FormField_TextChanged"/>
+                            </Border>
+
+                            <!-- Тип -->
+                            <TextBlock Grid.Row="3" Grid.Column="0" 
+                                       Text="Тип*" 
+                                       FontSize="12" 
+                                       FontWeight="SemiBold"
+                                       Foreground="#1E293B"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,10"/>
+                            <Border Grid.Row="3" Grid.Column="1"
+                                    Background="#F8FAFC"
+                                    BorderBrush="#E2E8F0"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Height="38"
+                                    Margin="0,0,0,10">
+                                <ComboBox x:Name="cmbType" 
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          FontSize="13"
+                                          Padding="8,0"
+                                          VerticalAlignment="Center"
+                                          SelectionChanged="FormField_SelectionChanged">
+                                    <ComboBoxItem Content="Товар"/>
+                                    <ComboBoxItem Content="Услуга"/>
+                                </ComboBox>
+                            </Border>
+
+                            <!-- Категория -->
+                            <TextBlock Grid.Row="4" Grid.Column="0" 
+                                       Text="Категория*" 
+                                       FontSize="12" 
+                                       FontWeight="SemiBold"
+                                       Foreground="#1E293B"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,10"/>
+                            <Border Grid.Row="4" Grid.Column="1"
+                                    Background="#F8FAFC"
+                                    BorderBrush="#E2E8F0"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Height="38"
+                                    Margin="0,0,0,10">
+                                <ComboBox x:Name="cmbCategory" 
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          FontSize="13"
+                                          Padding="8,0"
+                                          VerticalAlignment="Center"
+                                          DisplayMemberPath="Name"
+                                          SelectedValuePath="Id"
+                                          SelectionChanged="FormField_SelectionChanged"/>
+                            </Border>
+
+                            <!-- Изображение -->
+                            <TextBlock Grid.Row="5" Grid.Column="0" 
+                                       Text="Изображение" 
+                                       FontSize="12" 
+                                       FontWeight="SemiBold"
+                                       Foreground="#1E293B"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,10"/>
+                            <Grid Grid.Row="5" Grid.Column="1" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0"
+                                        Background="#F8FAFC"
+                                        BorderBrush="#E2E8F0"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Height="38">
+                                    <TextBox x:Name="txtImage" 
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             FontSize="12"
+                                             Padding="10,0"
+                                             VerticalAlignment="Center"
+                                             IsReadOnly="True"/>
+                                </Border>
+                                <Button Grid.Column="1" 
+                                        x:Name="btnSelectImage"
+                                        Content="Обзор..." 
+                                        Style="{StaticResource btnSecondary}" 
+                                        Width="80" 
+                                        Height="38" 
+                                        Margin="10,0,0,0"
+                                        FontSize="11"
+                                        Click="btnSelectImage_Click"/>
+                            </Grid>
+                        </Grid>
+
+                        <!-- Предпросмотр изображения -->
+                        <Border x:Name="borderPreview"
+                                Background="#F8FAFC" 
+                                CornerRadius="8" 
+                                Padding="10"
+                                Margin="0,0,0,15"
+                                BorderBrush="#E2E8F0"
+                                BorderThickness="1"
+                                Height="120">
+                            <Grid>
+                                <Image x:Name="imgPreview" 
+                                       Stretch="Uniform" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"
+                                       MaxWidth="200"
+                                       MaxHeight="100"/>
+                                <TextBlock x:Name="txtNoImage"
+                                           Text="Нет изображения"
+                                           FontSize="11"
+                                           Foreground="#94A3B8"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Visibility="Visible"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Активность -->
+                        <CheckBox x:Name="chkActive" 
+                                  Content="Активен (отображать в каталоге)" 
+                                  FontSize="12" 
+                                  Foreground="#1E293B"
+                                  Margin="0,0,0,20"
+                                  IsChecked="True"/>
+
+                        <!-- Кнопки действий -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="1"
+                                    x:Name="btnSave"
+                                    Content="Сохранить" 
+                                    Style="{StaticResource btnPrimary}" 
+                                    Width="100" 
+                                    Height="38" 
+                                    FontSize="11"
+                                    Margin="0,0,8,0"
+                                    Click="btnSave_Click"/>
+
+                            <Button Grid.Column="2"
+                                    x:Name="btnDelete"
+                                    Content="Удалить" 
+                                    Style="{StaticResource btnSecondary}" 
+                                    Width="80" 
+                                    Height="38" 
+                                    FontSize="11"
+                                    Margin="0,0,8,0"
+                                    Click="btnDelete_Click"/>
+
+                            <Button Grid.Column="3"
+                                    x:Name="btnCancel"
+                                    Content="Отмена" 
+                                    Style="{StaticResource btnSecondary}" 
+                                    Width="80" 
+                                    Height="38" 
+                                    FontSize="11"
+                                    Click="btnCancel_Click"/>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
