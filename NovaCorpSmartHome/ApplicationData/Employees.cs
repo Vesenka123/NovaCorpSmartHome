@@ -18,6 +18,7 @@ namespace NovaCorpSmartHome.ApplicationData
         public Employees()
         {
             this.Orders = new HashSet<Orders>();
+            this.Installations = new HashSet<Installations>();
         }
     
         public int Id { get; set; }
@@ -32,5 +33,7 @@ namespace NovaCorpSmartHome.ApplicationData
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orders> Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Installations> Installations { get; set; }
     }
 }

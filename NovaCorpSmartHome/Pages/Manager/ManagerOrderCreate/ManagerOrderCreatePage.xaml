@@ -6,578 +6,497 @@
       xmlns:local="clr-namespace:NovaCorpSmartHome.Pages.Manager.ManagerOrderCreate"
       mc:Ignorable="d" 
       Title="Создание заказа"
-      Background="{StaticResource BgColor}">
+      Background="{StaticResource BgColor}"
+      Loaded="Page_Loaded">
 
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Grid>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- Верхняя панель с информацией о клиенте и кнопками -->
-        <Border Grid.Row="0"
-                Background="White"
-                CornerRadius="10"
-                Padding="12"
-                Margin="0,0,0,12"
-                Effect="{StaticResource CardShadow}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Иконка клиента -->
-                <Border Grid.Column="0"
-                        Background="{StaticResource AccentColor}"
-                        Width="36" Height="36"
-                        CornerRadius="8"
-                        Margin="0,0,10,0">
-                    <TextBlock Text="👤" 
-                               FontSize="18"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
-                </Border>
-
-                <!-- Данные клиента (компактно) -->
-                <StackPanel Grid.Column="1">
-                    <TextBlock x:Name="txtClientName" 
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="#1E293B"/>
-                    <TextBlock x:Name="txtClientPhone" 
-                               FontSize="11"
-                               Foreground="#64748B"/>
-                </StackPanel>
-
-
-                <!-- Статус -->
-                <Border Grid.Column="2"
-                        Background="#F0F9FF"
-                        Padding="8,4"
-                        CornerRadius="12"
-                        Margin="0,0,10,0">
-                    <TextBlock Text="НОВЫЙ" 
-                               FontSize="10"
-                               VerticalAlignment="Center"
-                               FontWeight="Bold"
-                               Foreground="{StaticResource AccentColor}"/>
-                </Border>
-
-                <!-- Кнопки -->
-                <Button Grid.Column="3"
-                        x:Name="btnSaveOrder"
-                        Content="💾 Сохранить"
-                        Style="{StaticResource btnPrimary}"
-                        Height="34"
-                        Width="110"
-                        FontSize="11"
-                        Margin="0,0,5,0"
-                        Click="btnSaveOrder_Click"/>
-
-                <Button Grid.Column="4"
-                        x:Name="btnCancel"
-                        Content="✕"
-                        Style="{StaticResource btnSecondary}"
-                        Height="34"
-                        Width="50"
-                        FontSize="14"
-                        ToolTip="Отмена"
-                        Click="btnCancel_Click"/>
-            </Grid>
-        </Border>
-
-        <!-- ДВЕ КОЛОНКИ (вместо трех) для максимального места -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- ЛЕВАЯ КОЛОНКА: КАТАЛОГ -->
-            <Border Grid.Column="0"
+            <Border Grid.Row="0"
                     Background="White"
                     CornerRadius="10"
                     Padding="12"
+                    Margin="0,0,0,12"
                     Effect="{StaticResource CardShadow}">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                    <!-- Заголовок с вкладками -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <Border Background="{StaticResource AccentColor}"
-                                Width="24" Height="24"
-                                CornerRadius="6"
-                                Margin="0,0,6,0">
-                            <TextBlock Text="📋" 
-                                       FontSize="12"
-                                       Foreground="White"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
-                        </Border>
-                        <TextBlock Text="КАТАЛОГ"
-                                   FontSize="12"
-                                   FontWeight="Bold"
-                                   Foreground="#1E293B"
+                    <Border Grid.Column="0"
+                            Background="{StaticResource AccentColor}"
+                            Width="36" Height="36"
+                            CornerRadius="8"
+                            Margin="0,0,10,0">
+                        <TextBlock Text="👤" 
+                                   FontSize="18"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
+                    </Border>
 
-                        <!-- Индикатор выбранной категории -->
-                        <Border Background="#F1F5F9"
-                                CornerRadius="4"
-                                Padding="4,2"
-                                Margin="8,0,0,0">
-                            <TextBlock x:Name="txtSelectedCategory" 
-                                       VerticalAlignment="Center"
-                                       Text="Все"
-                                       FontSize="10"
-                                       Foreground="#64748B"/>
-                        </Border>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock x:Name="txtClientName" 
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#1E293B"/>
+                        <TextBlock x:Name="txtClientPhone" 
+                                   FontSize="11"
+                                   Foreground="#64748B"/>
                     </StackPanel>
 
-                    <!-- Категории и товары в одной области (сетка 50/50) -->
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="6"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <Border Grid.Column="2"
+                            Background="#F0F9FF"
+                            Padding="8,4"
+                            CornerRadius="12"
+                            Margin="0,0,10,0">
+                        <TextBlock Text="НОВЫЙ" 
+                                   FontSize="10"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource AccentColor}"/>
+                    </Border>
 
-                        <!-- Категории (левая половина) -->
-                        <Border Grid.Column="0"
-                                Background="#F8FAFC"
-                                CornerRadius="6"
-                                BorderBrush="#E2E8F0"
-                                BorderThickness="1"
-                                Padding="2"
-                                Height="360">
-                            <TreeView x:Name="treeCategories" 
-                                      Background="Transparent"
-                                      BorderThickness="0"
-                                      SelectedItemChanged="treeCategories_SelectedItemChanged"
-                                      FontSize="11">
-                                <TreeView.ItemContainerStyle>
-                                    <Style TargetType="TreeViewItem">
-                                        <Setter Property="IsExpanded" Value="True"/>
-                                        <Setter Property="Padding" Value="4,2"/>
-                                        <Setter Property="Cursor" Value="Hand"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="#EEF2FF"/>
-                                                <Setter Property="BorderBrush" Value="{StaticResource AccentColor}"/>
-                                                <Setter Property="BorderThickness" Value="2,0,0,0"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TreeView.ItemContainerStyle>
-                            </TreeView>
-                        </Border>
-
-                        <!-- Товары (правая половина) - УВЕЛИЧЕНА ВЫСОТА -->
-                        <Border Grid.Column="2"
-                                Background="#F8FAFC"
-                                CornerRadius="6"
-                                BorderBrush="#E2E8F0"
-                                BorderThickness="1"
-                                Padding="2"
-                                Height="360">
-                            <ListBox x:Name="lstProducts" 
-                                     Background="Transparent"
-                                     BorderThickness="0"
-                                     SelectionMode="Single"
-                                     MouseDoubleClick="lstProducts_MouseDoubleClick"
-                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                     FontSize="11">
-                                <ListBox.ItemContainerStyle>
-                                    <Style TargetType="ListBoxItem">
-                                        <Setter Property="Padding" Value="4,3"/>
-                                        <Setter Property="Cursor" Value="Hand"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="#EEF2FF"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ListBox.ItemContainerStyle>
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                                <TextBlock>
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Text" Value="📦"/>
-                                                            <Setter Property="Margin" Value="0,0,4,0"/>
-                                                            <Setter Property="FontSize" Value="12"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Type}" Value="Услуга">
-                                                                    <Setter Property="Text" Value="🔧"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                                <TextBlock Text="{Binding Name}" 
-                                                           FontSize="11"
-                                                           Foreground="#1E293B"/>
-                                            </StackPanel>
-                                            <TextBlock Grid.Column="1" 
-                                                       Text="{Binding Price, StringFormat={}{0:N0} ₽}" 
-                                                       Foreground="{StaticResource AccentColor}" 
-                                                       FontSize="11"
-                                                       FontWeight="SemiBold"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </Border>
-                    </Grid>
-
-                    <!-- Кнопка добавления -->
-                    <Button Grid.Row="2"
-                            x:Name="btnAddToOrder"
-                            Content="➕ Добавить выбранное"
+                    <Button Grid.Column="3"
+                            x:Name="btnSaveOrder"
+                            Content="💾 Оформить заказ"
                             Style="{StaticResource btnPrimary}"
-                            Height="32"
+                            Height="34"
+                            Width="140"
                             FontSize="11"
-                            Margin="0,8,0,0"
-                            Click="btnAddToOrder_Click"
-                            IsEnabled="False"/>
+                            Margin="0,0,5,0"
+                            Click="btnSaveOrder_Click"/>
+
+                    <Button Grid.Column="4"
+                            x:Name="btnCancel"
+                            Content="✕"
+                            Style="{StaticResource btnSecondary}"
+                            Height="34"
+                            Width="50"
+                            FontSize="14"
+                            ToolTip="Отмена"
+                            Click="btnCancel_Click"/>
                 </Grid>
             </Border>
 
-            <!-- ПРАВАЯ КОЛОНКА: ЗАКАЗ И ДЕТАЛИ -->
-            <Border Grid.Column="2"
-                    Background="White"
-                    CornerRadius="10"
-                    Padding="12"
-                    Effect="{StaticResource CardShadow}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.8*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="1.2*"/>
+                </Grid.ColumnDefinitions>
 
-                    <!-- Заголовок с количеством -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
-                        <Border Background="#10B981"
-                                Width="24" Height="24"
-                                CornerRadius="6"
-                                Margin="0,0,6,0">
-                            <TextBlock Text="🛒" 
-                                       FontSize="12"
-                                       Foreground="White"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
-                        </Border>
-                        <TextBlock Text="ЗАКАЗ"
-                                   FontSize="12"
-                                   FontWeight="Bold"
-                                   Foreground="#1E293B"
-                                   VerticalAlignment="Center"/>
-                        <Border Background="#E2E8F0"
-                                CornerRadius="10"
-                                Padding="4,2"
-                                Margin="6,0,0,0">
-                            <TextBlock x:Name="txtItemsCount" 
-                                       Text="0"
-                                       FontSize="10"
-                                       FontWeight="Bold"
-                                       Foreground="#1E293B"/>
-                        </Border>
-                    </StackPanel>
+                <Border Grid.Column="0"
+                        Background="White"
+                        CornerRadius="10"
+                        Padding="10"
+                        Effect="{StaticResource CardShadow}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <!-- Список товаров в заказе (увеличен) -->
-                    <ScrollViewer Grid.Row="1"
-                                  VerticalScrollBarVisibility="Auto"
-                                  Background="#F8FAFC"
-                                  BorderBrush="#E2E8F0"
-                                  BorderThickness="1"
-                                  Padding="4"
-                                  Height="220">
-                        <StackPanel>
-                            <ItemsControl x:Name="icOrderItems">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Background="White"
-                                                CornerRadius="4"
-                                                Margin="0,0,0,4"
-                                                Padding="6"
-                                                BorderBrush="#E2E8F0"
-                                                BorderThickness="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                    <TextBlock Text="{Binding Product.Name}" 
-                                                               FontSize="11"
-                                                               FontWeight="SemiBold"
-                                                               Foreground="#1E293B"
-                                                               VerticalAlignment="Center"
-                                                               TextWrapping="Wrap"
-                                                               MaxWidth="150"/>
-                                                    <TextBlock Text="{Binding Product.Type}" 
-                                                               FontSize="9"
-                                                               VerticalAlignment="Center"
-                                                               Foreground="#64748B"/>
-
-                                                    <TextBlock Grid.Column="1" 
-                                                           Text="{Binding Quantity}" 
-                                                           FontSize="11"
-                                                           Margin="8,0"
-                                                           VerticalAlignment="Center"/>
-
-                                                <TextBlock Grid.Column="2" 
-                                                           Text="{Binding Total, StringFormat={}{0:N0} ₽}" 
-                                                           FontSize="11"
-                                                           FontWeight="Bold"
-                                                           Foreground="{StaticResource AccentColor}"
-                                                           VerticalAlignment="Center"
-                                                           Margin="0,0,8,0"/>
-
-                                                <Button Grid.Column="3"
-                                                        Content="✕"
-                                                        Width="20" Height="20"
-                                                        Click="btnRemoveItem_Click"
-                                                        Tag="{Binding}"
-                                                        ToolTip="Удалить"
-                                                        Background="Transparent"
-                                                        BorderThickness="0">
-                                                    <Button.Template>
-                                                        <ControlTemplate TargetType="Button">
-                                                            <Border Background="Transparent"
-                                                                    CornerRadius="3">
-                                                                <TextBlock Text="✕" 
-                                                                           FontSize="12"
-                                                                           Foreground="#EF4444"
-                                                                           HorizontalAlignment="Center"
-                                                                           VerticalAlignment="Center"/>
-                                                            </Border>
-                                                        </ControlTemplate>
-                                                    </Button.Template>
-                                                </Button>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
+                            <Border Background="{StaticResource AccentColor}"
+                                    Width="20" Height="20"
+                                    CornerRadius="5"
+                                    Margin="0,0,5,0">
+                                <TextBlock Text="📋" FontSize="10" Foreground="White"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="КАТАЛОГ" FontSize="11" FontWeight="Bold"
+                                       Foreground="#1E293B" VerticalAlignment="Center"/>
+                            <Border Background="#F1F5F9" CornerRadius="4" Padding="3,2" Margin="6,0,0,0">
+                                <TextBlock x:Name="txtSelectedCategory" VerticalAlignment="Center"
+                                           Text="Все" FontSize="9" Foreground="#64748B"/>
+                            </Border>
                         </StackPanel>
-                    </ScrollViewer>
 
-                    <!-- Итоговая сумма и кнопка очистки в одной строке -->
-                    <Grid Grid.Row="2" Margin="0,8,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Border Grid.Column="0"
-                                Background="#F1F4F9"
-                                CornerRadius="6"
-                                Padding="8">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" 
-                                           Text="ИТОГО:" 
-                                           FontSize="12"
-                                           FontWeight="Bold"
-                                           Foreground="#1E293B"
-                                           Margin="0,0,8,0"/>
-                                <TextBlock Grid.Column="1" 
-                                           x:Name="txtTotal" 
-                                           FontSize="14"
-                                           FontWeight="Bold"
-                                           Foreground="{StaticResource AccentColor}"
-                                           HorizontalAlignment="Right"/>
-                            </Grid>
-                        </Border>
-
-                        <Button Grid.Column="1"
-                                x:Name="btnClearOrder"
-                                Content="🗑"
-                                Width="60" Height="32"
-                                Style="{StaticResource btnSecondary}"
-                                FontSize="14"
-                                Margin="6,0,0,0"
-                                ToolTip="Очистить корзину"
-                                Click="btnClearOrder_Click"/>
-                    </Grid>
-
-                    <!-- ДЕТАЛИ ЗАКАЗА (компактно) -->
-                    <Border Grid.Row="3"
-                            Background="#F8FAFC"
-                            CornerRadius="6"
-                            Padding="8"
-                            BorderBrush="#E2E8F0"
-                            BorderThickness="1">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                        <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="4"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Дата -->
-                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,4,4">
-                                <TextBlock Text="Дата установки" 
-                                           FontSize="9"
-                                           Foreground="#64748B"/>
-                                <DatePicker x:Name="dpInstallationDate" 
-                                            Height="26"
-                                            FontSize="10"
-                                            Padding="4,0"/>
-                            </StackPanel>
+                            <Border Grid.Column="0" Background="#F8FAFC" CornerRadius="6"
+                                    BorderBrush="#E2E8F0" BorderThickness="1" Padding="2" Height="400">
+                                <TreeView x:Name="treeCategories" Background="Transparent"
+                                          BorderThickness="0"
+                                          SelectedItemChanged="treeCategories_SelectedItemChanged"
+                                          FontSize="10">
+                                    <TreeView.ItemContainerStyle>
+                                        <Style TargetType="TreeViewItem">
+                                            <Setter Property="IsExpanded" Value="True"/>
+                                            <Setter Property="Padding" Value="3,2"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter Property="Background" Value="#EEF2FF"/>
+                                                    <Setter Property="BorderBrush" Value="{StaticResource AccentColor}"/>
+                                                    <Setter Property="BorderThickness" Value="2,0,0,0"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TreeView.ItemContainerStyle>
+                                </TreeView>
+                            </Border>
 
-                            <!-- Примечания (в две строки) -->
-                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="4,0,0,4">
-                                <TextBlock Text="Примечания" 
-                                           FontSize="9"
-                                           Foreground="#64748B"/>
-                                <TextBox x:Name="txtNotes" 
-                                         Height="26"
-                                         FontSize="10"
-                                         Padding="4,0"/>
-                            </StackPanel>
+                            <Border Grid.Column="2" Background="#F8FAFC" CornerRadius="6"
+                                    BorderBrush="#E2E8F0" BorderThickness="1" Padding="2" Height="400">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ListBox x:Name="lstProducts" Background="Transparent"
+                                             BorderThickness="0" SelectionMode="Single"
+                                             MouseDoubleClick="lstProducts_MouseDoubleClick"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                             FontSize="10">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="Padding" Value="3,2"/>
+                                                <Setter Property="Cursor" Value="Hand"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="Background" Value="#EEF2FF"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                                        <TextBlock Text="📦" FontSize="10" Margin="0,0,3,0"/>
+                                                        <TextBlock Text="{Binding Name}" FontSize="10" Foreground="#1E293B"/>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="1" 
+                                                               Text="{Binding Price, StringFormat={}{0:N0} ₽}" 
+                                                               Foreground="{StaticResource AccentColor}" 
+                                                               FontSize="10" FontWeight="SemiBold"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </ScrollViewer>
+                            </Border>
                         </Grid>
-                    </Border>
 
-                    <!-- БЛОК ПОДСКАЗОК О ДОКУМЕНТАХ (ДОБАВЛЕНО) -->
-                    <Border Grid.Row="4"
-                            Margin="0,8,0,0"
-                            CornerRadius="8">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                <GradientStop Color="#F0F9FF" Offset="0.0"/>
-                                <GradientStop Color="#E6F7E6" Offset="1.0"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Border Padding="10">
-                            <StackPanel>
-                                <!-- Заголовок -->
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <TextBlock Text="📋" FontSize="14" Margin="0,0,6,0"/>
-                                    <TextBlock Text="Документы по заказу" 
-                                               FontSize="11"
-                                               FontWeight="SemiBold"
-                                               Foreground="#1E293B"/>
-                                </StackPanel>
+                        <Button Grid.Row="2" x:Name="btnAddToOrder"
+                                Content="➕ Добавить"
+                                Style="{StaticResource btnPrimary}"
+                                Height="28" FontSize="10" Margin="0,6,0,0"
+                                Click="btnAddToOrder_Click" IsEnabled="False"/>
+                    </Grid>
+                </Border>
 
-                                <!-- Список документов -->
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
+                <Border Grid.Column="2"
+                        Background="White"
+                        CornerRadius="10"
+                        Padding="10"
+                        Effect="{StaticResource CardShadow}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                                    <!-- Левая колонка документов -->
-                                    <StackPanel Grid.Column="0">
-                                        <Grid Margin="0,0,0,3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="16"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="📄" FontSize="10"/>
-                                            <TextBlock Grid.Column="1" Text="Товарный чек" 
-                                                       FontSize="10" Foreground="#1E293B"/>
-                                        </Grid>
-                                        <Grid Margin="0,0,0,3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="16"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="📄" FontSize="10"/>
-                                            <TextBlock Grid.Column="1" Text="Счет на оплату" 
-                                                       FontSize="10" Foreground="#1E293B"/>
-                                        </Grid>
-                                        <Grid Margin="0,0,0,3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="16"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="📄" FontSize="10"/>
-                                            <TextBlock Grid.Column="1" Text="Договор поставки" 
-                                                       FontSize="10" Foreground="#1E293B"/>
-                                        </Grid>
-                                    </StackPanel>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6">
+                            <Border Background="#10B981" Width="20" Height="20" CornerRadius="5" Margin="0,0,5,0">
+                                <TextBlock Text="🛒" FontSize="10" Foreground="White"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="ЗАКАЗ" FontSize="11" FontWeight="Bold"
+                                       Foreground="#1E293B" VerticalAlignment="Center"/>
+                            <Border Background="#E2E8F0" CornerRadius="10" Padding="3,1" Margin="5,0,0,0">
+                                <TextBlock x:Name="txtItemsCount" Text="0" FontSize="9"
+                                           FontWeight="Bold" Foreground="#1E293B"/>
+                            </Border>
+                        </StackPanel>
 
-                                    <!-- Правая колонка документов -->
-                                    <StackPanel Grid.Column="1">
-                                        <Grid Margin="0,0,0,3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="16"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="📄" FontSize="10"/>
-                                            <TextBlock Grid.Column="1" Text="Гарантийный талон" 
-                                                       FontSize="10" Foreground="#1E293B"/>
-                                        </Grid>
-                                        <Grid Margin="0,0,0,3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="16"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="📄" FontSize="10"/>
-                                            <TextBlock Grid.Column="1" Text="Акт приема-передачи" 
-                                                       FontSize="10" Foreground="#1E293B"/>
-                                        </Grid>
-                                        <Grid Margin="0,0,0,3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="16"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="📄" FontSize="10"/>
-                                            <TextBlock Grid.Column="1" Text="Инструкция по установке" 
-                                                       FontSize="10" Foreground="#1E293B"/>
-                                        </Grid>
-                                    </StackPanel>
-                                </Grid>
+                        <Border Grid.Row="1" Background="#F8FAFC" BorderBrush="#E2E8F0"
+                                BorderThickness="1" CornerRadius="6" Height="200" Margin="0,0,0,6">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <ItemsControl x:Name="icOrderItems">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="White" CornerRadius="4" Margin="3" Padding="5"
+                                                    BorderBrush="#E2E8F0" BorderThickness="1">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
 
-                                <!-- Разделитель -->
-                                <Rectangle Height="1" Fill="#E2E8F0" Margin="0,6,0,6"/>
+                                                    <TextBlock Grid.Row="0" Grid.Column="0" 
+                                                               Text="{Binding Product.Name}" 
+                                                               FontSize="11" FontWeight="SemiBold"
+                                                               Foreground="#1E293B" TextWrapping="Wrap" Margin="0,0,5,3"/>
+                                                    <TextBlock Grid.Row="1" Grid.Column="0" 
+                                                               Text="{Binding Product.Type}" 
+                                                               FontSize="9" Foreground="#64748B"/>
 
-                                <!-- Информация о чеке -->
+                                                    <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+                                                                Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <Button Content="−" Width="22" Height="22"
+                                                                Click="btnDecreaseQuantity_Click" Tag="{Binding}"
+                                                                FontSize="12" FontWeight="Bold" Background="#F1F5F9"
+                                                                BorderBrush="#E2E8F0" BorderThickness="1"
+                                                                Cursor="Hand" Margin="0,0,2,0"/>
+                                                        <Border Background="White" Width="28" Height="22"
+                                                                BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="4">
+                                                            <TextBlock Text="{Binding Quantity}" FontSize="11"
+                                                                       FontWeight="SemiBold" TextAlignment="Center"
+                                                                       VerticalAlignment="Center" Foreground="#1E293B"/>
+                                                        </Border>
+                                                        <Button Content="+" Width="22" Height="22"
+                                                                Click="btnIncreaseQuantity_Click" Tag="{Binding}"
+                                                                FontSize="12" FontWeight="Bold" Background="#F1F5F9"
+                                                                BorderBrush="#E2E8F0" BorderThickness="1"
+                                                                Cursor="Hand" Margin="2,0,5,0"/>
+                                                        <TextBlock Text="{Binding Total, StringFormat={}{0:N0} ₽}" 
+                                                                   FontSize="10" FontWeight="Bold"
+                                                                   Foreground="{StaticResource AccentColor}"
+                                                                   VerticalAlignment="Center" Margin="0,0,5,0"
+                                                                   MinWidth="70" TextAlignment="Right"/>
+                                                        <Button Content="✕" Width="22" Height="22"
+                                                                Click="btnRemoveItem_Click" Tag="{Binding}"
+                                                                ToolTip="Удалить" Background="#FEE2E2"
+                                                                BorderBrush="#EF4444" BorderThickness="1"
+                                                                Foreground="#EF4444" FontWeight="Bold" Cursor="Hand"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </Border>
+
+                        <Grid Grid.Row="2" Margin="0,0,0,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Background="#F1F4F9" CornerRadius="6" Padding="6">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="🧾" FontSize="14" Margin="0,0,8,0"/>
-                                    <TextBlock Grid.Column="1" 
-                                               Text="После оплаты будет сформирован кассовый чек и отправлен клиенту на email"
-                                               FontSize="9"
-                                               Foreground="#64748B"
-                                               TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Column="0" Text="ИТОГО:" FontSize="12"
+                                               FontWeight="Bold" Foreground="#1E293B" Margin="0,0,5,0"/>
+                                    <TextBlock Grid.Column="1" x:Name="txtTotal" FontSize="14"
+                                               FontWeight="Bold" Foreground="{StaticResource AccentColor}"
+                                               HorizontalAlignment="Right"/>
                                 </Grid>
+                            </Border>
+                            <Button Grid.Column="1" x:Name="btnClearOrder" Content="Очистить"
+                                    Width="80" Height="30" Style="{StaticResource btnSecondary}"
+                                    FontSize="10" Margin="6,0,0,0" ToolTip="Очистить корзину"
+                                    Click="btnClearOrder_Click"/>
+                        </Grid>
+
+                        <Border Grid.Row="3" Background="#F8FAFC" CornerRadius="6" Padding="6"
+                                BorderBrush="#E2E8F0" BorderThickness="1" Margin="0,0,0,6">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,4,0">
+                                    <TextBlock Text="Дата установки" FontSize="9" Foreground="#64748B"/>
+                                    <DatePicker x:Name="dpInstallationDate" Height="26" FontSize="12" Padding="4,0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="4,0,0,0">
+                                    <TextBlock Text="Примечания" FontSize="9" Foreground="#64748B"/>
+                                    <TextBox x:Name="txtNotes" Height="26" FontSize="12" Padding="4,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="4" Background="#F8FAFC" CornerRadius="6" Padding="6"
+                                BorderBrush="#E2E8F0" BorderThickness="1" Margin="0,0,0,6">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="#F59E0B" Width="28" Height="28"
+                                        CornerRadius="6" Margin="0,0,8,0">
+                                    <TextBlock Text="🔧" FontSize="14" Foreground="White"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Назначить установщика" FontSize="10"
+                                               FontWeight="SemiBold" Foreground="#1E293B"/>
+                                    <ComboBox x:Name="cmbInstaller" Height="28" FontSize="11"
+                                              Margin="0,3,0,0" VerticalContentAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="5" CornerRadius="6" Background="#F0F9FF"
+                                BorderBrush="#E2E8F0" BorderThickness="1" Padding="6">
+                            <StackPanel>
+                                <TextBlock Text="📋 Документы по заказу" FontSize="12"
+                                           FontWeight="SemiBold" Foreground="#1E293B" Margin="0,0,0,4"/>
+                                <WrapPanel>
+                                    <TextBlock Text="📄 Товарный чек" FontSize="12" Margin="0,1,8,1"/>
+                                    <TextBlock Text="📄 Счет на оплату" FontSize="12" Margin="0,1,8,1"/>
+                                    <TextBlock Text="📄 Договор" FontSize="12" Margin="0,1,8,1"/>
+                                    <TextBlock Text="📄 Гарантия" FontSize="12" Margin="0,1,8,1"/>
+                                    <TextBlock Text="📄 Акт" FontSize="12" Margin="0,1,8,1"/>
+                                    <TextBlock Text="📄 Инструкция" FontSize="12" Margin="0,1,0,1"/>
+                                </WrapPanel>
+                                <TextBlock Text="🧾 Кассовый чек на email после оплаты"
+                                           FontSize="12" Foreground="#64748B" TextWrapping="Wrap" Margin="0,4,0,0"/>
                             </StackPanel>
                         </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="overlayPayment" Visibility="Collapsed" Background="#80000000">
+            <Border Background="White" 
+                    CornerRadius="16" 
+                    Width="440" 
+                    Height="Auto"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Padding="28"
+                    BorderBrush="#E2E8F0"
+                    BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect Color="#2D3748" Opacity="0.3" BlurRadius="24" ShadowDepth="6"/>
+                </Border.Effect>
+
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,16">
+                        <Border Background="#10B981" Width="44" Height="44" CornerRadius="12">
+                            <TextBlock Text="💳" FontSize="22" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+
+                    <TextBlock Text="Оплата заказа" 
+                               FontSize="22" FontWeight="SemiBold" 
+                               Foreground="#1E293B" 
+                               HorizontalAlignment="Center" 
+                               Margin="0,0,0,4"/>
+
+                    <TextBlock x:Name="txtPaymentOrderNumber"
+                               Text="Заказ №..."
+                               FontSize="13"
+                               Foreground="#64748B"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,20"/>
+
+                    <Border Background="#F0F9FF" 
+                            CornerRadius="12" 
+                            Padding="16" 
+                            Margin="0,0,0,16"
+                            BorderBrush="#E2E8F0"
+                            BorderThickness="1">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="К оплате:" 
+                                       FontSize="12" 
+                                       Foreground="#64748B" 
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="txtPaymentAmount"
+                                       Text="0 ₽"
+                                       FontSize="32"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource AccentColor}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
                     </Border>
-                </Grid>
+
+                    <Border Background="#F8FAFC" CornerRadius="8" Padding="12" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="Покупатель:" FontSize="10" Foreground="#64748B"/>
+                            <TextBlock x:Name="txtPaymentClient" 
+                                       Text="" 
+                                       FontSize="13" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="#1E293B"/>
+                            <TextBlock x:Name="txtPaymentPhone" 
+                                       Text="" 
+                                       FontSize="11" 
+                                       Foreground="#64748B" 
+                                       Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <TextBlock Text="Способ оплаты" FontSize="11" Foreground="#64748B" Margin="0,0,0,6"/>
+                    <Border Background="#F8FAFC" CornerRadius="8" Padding="10" Margin="0,0,0,20"
+                            BorderBrush="#E2E8F0" BorderThickness="1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="💳" FontSize="18" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <StackPanel>
+                                <TextBlock Text="Наличными / картой на кассе" 
+                                           FontSize="12" FontWeight="SemiBold" Foreground="#1E293B"/>
+                                <TextBlock Text="Терминал NovaCorp" 
+                                           FontSize="10" Foreground="#64748B"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" 
+                                x:Name="btnCancelPayment"
+                                Content="Отмена"
+                                Height="42"
+                                Style="{StaticResource btnSecondary}"
+                                FontSize="13"
+                                Click="btnCancelPayment_Click"/>
+
+                        <Button Grid.Column="2" 
+                                x:Name="btnConfirmPayment"
+                                Content="✓ Подтвердить оплату"
+                                Height="42"
+                                Style="{StaticResource btnPrimary}"
+                                FontSize="13"
+                                FontWeight="SemiBold"
+                                Click="btnConfirmPayment_Click"/>
+                    </Grid>
+
+                    <TextBlock Text="После подтверждения товары будут списаны со склада"
+                               FontSize="10"
+                               Foreground="#94A3B8"
+                               TextAlignment="Center"
+                               Margin="0,12,0,0"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
             </Border>
         </Grid>
     </Grid>

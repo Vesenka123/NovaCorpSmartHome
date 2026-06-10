@@ -1,0 +1,257 @@
+﻿<Page x:Class="NovaCorpSmartHome.Pages.Admin.AdminInstallations.AdminInstallationsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:NovaCorpSmartHome.Pages.Admin.AdminInstallations"
+      mc:Ignorable="d" 
+      Title="Просмотр установок"
+      Background="{StaticResource BgColor}"
+      Loaded="Page_Loaded">
+
+    <Page.Resources>
+        
+    </Page.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Шапка -->
+        <Border Grid.Row="0" Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,20" Effect="{StaticResource CardShadow}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="{StaticResource SecondaryColor}" Width="50" Height="50" CornerRadius="10" Margin="0,0,15,0">
+                    <TextBlock Text="📊" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Управление установками" FontSize="20" FontWeight="SemiBold" Foreground="#1E293B"/>
+                    <TextBlock x:Name="txtStatistics" Text="Загрузка данных..." FontSize="13" Foreground="#64748B" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <Button Grid.Column="2" x:Name="btnBack" Content="← Назад" Style="{StaticResource btnSecondary}" Height="50" Width="100" Click="btnBack_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Панель фильтров -->
+        <Border Grid.Row="1" Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,20" Effect="{StaticResource CardShadow}">
+            <StackPanel>
+                <TextBlock Text="Фильтры" FontSize="15" FontWeight="SemiBold" Foreground="#1E293B" Margin="0,0,0,15"/>
+
+                <!-- Первая строка: исполнитель, статус, поиск -->
+                <WrapPanel Margin="0,0,0,15">
+                    <Border Width="250" Margin="0,0,15,0">
+                        <StackPanel>
+                            <TextBlock Text="Исполнитель" FontSize="12" Foreground="#64748B" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="cmbInstallerFilter" 
+                                     Style="{StaticResource ModernComboBox}" 
+                                     SelectionChanged="cmbInstallerFilter_SelectionChanged"
+                                     DisplayMemberPath="Name"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Width="200" Margin="0,0,15,0">
+                        <StackPanel>
+                            <TextBlock Text="Статус" FontSize="12" Foreground="#64748B" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="cmbStatusFilter" 
+                                     Style="{StaticResource ModernComboBox}" 
+                                     SelectionChanged="cmbStatusFilter_SelectionChanged">
+                                <ComboBoxItem Content="Все статусы" IsSelected="True"/>
+                                <ComboBoxItem Content="Ожидает установки"/>
+                                <ComboBoxItem Content="В работе"/>
+                                <ComboBoxItem Content="Завершена"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Width="350" Margin="0,0,15,0">
+                        <StackPanel>
+                            <TextBlock Text="Поиск" FontSize="12" Foreground="#64748B" Margin="0,0,0,5"/>
+                            <TextBox x:Name="txtSearch" 
+                                     Style="{StaticResource SearchTextBoxStyle}"
+                                     TextChanged="txtSearch_TextChanged"/>
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+
+                <!-- Вторая строка: быстрые фильтры, сброс и экспорт -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Быстрые фильтры (слева) -->
+                    <WrapPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="Быстрые фильтры:" FontSize="13" Foreground="#64748B" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                        <Button x:Name="btnToday" Content="Сегодня" Style="{StaticResource FilterButtonStyle}" Click="btnToday_Click" Margin="0,0,10,0" Height="40"/>
+                        <Button x:Name="btnWeek" Content="Эта неделя" Style="{StaticResource FilterButtonStyle}" Click="btnWeek_Click" Margin="0,0,10,0" Height="40"/>
+                        <Button x:Name="btnMonth" Content="Этот месяц" Style="{StaticResource FilterButtonStyle}" Click="btnMonth_Click" Margin="0,0,10,0" Height="40"/>
+                        <Button x:Name="btnAll" Content="Все" Style="{StaticResource ActiveFilterButtonStyle}" Click="btnAll_Click" Margin="0,0,0,0" Height="40"/>
+                    </WrapPanel>
+
+                    <!-- Кнопки сброса и экспорта (справа) -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button x:Name="btnResetFilters" 
+                                Content="🔄 Сбросить фильтры" 
+                                Style="{StaticResource FilterButtonStyle}"
+                                Click="btnResetFilters_Click"
+                                Height="50"
+                                Width="150"
+                                Margin="0,0,10,0"/>
+                        <Button x:Name="btnExport" 
+                                Content="💾 Экспорт в CSV" 
+                                Style="{StaticResource ExportButtonStyle}"
+                                Click="btnExport_Click"
+                                Height="50"
+                                Width="150"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Таблица установок -->
+        <Border Grid.Row="2" Background="White" CornerRadius="12" Effect="{StaticResource CardShadow}" Padding="0">
+            <Grid>
+                <DataGrid x:Name="dgInstallations"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          SelectionMode="Single"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          HorizontalGridLinesBrush="#F1F5F9"
+                          RowHeaderWidth="0"
+                          BorderThickness="0"
+                          AlternatingRowBackground="#F8FAFC"
+                          RowHeight="50"
+                          CanUserSortColumns="True"
+                          Sorting="dgInstallations_Sorting">
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#F1F5F9"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#EFF6FF"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="№ Заказа" 
+                                           Binding="{Binding OrderId}" 
+                                           Width="80"
+                                           IsReadOnly="True"/>
+
+                        <DataGridTextColumn Header="Клиент" 
+                                           Binding="{Binding ClientName}" 
+                                           Width="1.5*"
+                                           IsReadOnly="True"/>
+
+                        <DataGridTextColumn Header="Адрес монтажа" 
+                                           Binding="{Binding Address}" 
+                                           Width="2*"
+                                           IsReadOnly="True"/>
+
+                        <DataGridTextColumn Header="Установщик" 
+                                           Binding="{Binding InstallerName}" 
+                                           Width="1.5*"
+                                           IsReadOnly="True"/>
+
+                        <DataGridTextColumn Header="Плановая дата" 
+                                           Binding="{Binding PlanDate, StringFormat='dd.MM.yyyy'}" 
+                                           Width="100"
+                                           IsReadOnly="True"/>
+
+                        <DataGridTextColumn Header="Начало работ" 
+                                           Binding="{Binding StartDate, StringFormat='dd.MM.yyyy HH:mm'}" 
+                                           Width="130"
+                                           IsReadOnly="True"/>
+
+                        <DataGridTextColumn Header="Завершение" 
+                                           Binding="{Binding CompletionDate, StringFormat='dd.MM.yyyy HH:mm'}" 
+                                           Width="130"
+                                           IsReadOnly="True"/>
+
+                        <!-- Статус - ширина 130 -->
+                        <DataGridTemplateColumn Header="Статус" Width="130">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Padding="6,4" CornerRadius="6" Margin="4,2">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="#F3F4F6"/>
+                                                <Setter Property="TextElement.Foreground" Value="#374151"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Ожидает установки">
+                                                        <Setter Property="Background" Value="#FEF3C7"/>
+                                                        <Setter Property="TextElement.Foreground" Value="#D97706"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="В работе">
+                                                        <Setter Property="Background" Value="#DBEAFE"/>
+                                                        <Setter Property="TextElement.Foreground" Value="#2563EB"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Завершена">
+                                                        <Setter Property="Background" Value="#D1FAE5"/>
+                                                        <Setter Property="TextElement.Foreground" Value="#059669"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding Status}" 
+                                                   HorizontalAlignment="Center" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="11"
+                                                   TextAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Действия" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Content="👁" 
+                                                Style="{StaticResource FilterButtonStyle}"
+                                                Width="36"
+                                                Height="36"
+                                                Padding="0"
+                                                Margin="2"
+                                                Click="ViewDetails_Click"
+                                                Tag="{Binding}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Панель загрузки -->
+                <Border x:Name="loadingPanel" 
+                        Background="#FFFFFF" 
+                        Visibility="Collapsed"
+                        CornerRadius="12">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ProgressBar IsIndeterminate="True" Width="200" Height="20" Margin="0,0,0,10"/>
+                        <TextBlock Text="Загрузка данных..." FontSize="14" Foreground="#64748B"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

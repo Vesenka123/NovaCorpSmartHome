@@ -60,6 +60,12 @@ namespace NovaCorpSmartHome.Pages.Admin.AdminDashboard
             AppFrame.FrameMain.Navigate(new Pages.Admin.AdminStock.AdminStockPage());
         }
 
+        private void CardInstallations_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            // Навигация на страницу просмотра установок
+            AppFrame.FrameMain.Navigate(new Pages.Admin.AdminInstallations.AdminInstallationsPage());
+        }
+
         private void CardReports_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             // Раскомментируйте, когда создадите страницу отчетов

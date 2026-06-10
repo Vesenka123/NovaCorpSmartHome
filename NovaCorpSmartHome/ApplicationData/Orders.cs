@@ -17,6 +17,7 @@ namespace NovaCorpSmartHome.ApplicationData
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Orders()
         {
+            this.Installations = new HashSet<Installations>();
             this.OrderItems = new HashSet<OrderItems>();
         }
     
@@ -32,6 +33,8 @@ namespace NovaCorpSmartHome.ApplicationData
     
         public virtual Customers Customers { get; set; }
         public virtual Employees Employees { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Installations> Installations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItems> OrderItems { get; set; }
     }

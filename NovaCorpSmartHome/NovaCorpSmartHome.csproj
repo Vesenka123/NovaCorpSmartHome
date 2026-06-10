@@ -64,6 +64,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialogs\CompleteWorkDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\OrderDetailsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,40 +84,53 @@
     <Compile Include="ApplicationData\AppEvents.cs" />
     <Compile Include="ApplicationData\AppFrame.cs" />
     <Compile Include="ApplicationData\Categories.cs">
-      <DependentUpon>ModelNovaCorp.tt</DependentUpon>
+      <DependentUpon>NovaCorpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ApplicationData\Customers.cs">
-      <DependentUpon>ModelNovaCorp.tt</DependentUpon>
+      <DependentUpon>NovaCorpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ApplicationData\Employees.cs">
-      <DependentUpon>ModelNovaCorp.tt</DependentUpon>
+      <DependentUpon>NovaCorpModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationData\ModelNovaCorp.Context.cs">
+    <Compile Include="ApplicationData\Installations.cs">
+      <DependentUpon>NovaCorpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationData\NovaCorpModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModelNovaCorp.Context.tt</DependentUpon>
+      <DependentUpon>NovaCorpModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationData\ModelNovaCorp.cs">
+    <Compile Include="ApplicationData\NovaCorpModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModelNovaCorp.tt</DependentUpon>
+      <DependentUpon>NovaCorpModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationData\ModelNovaCorp.Designer.cs">
+    <Compile Include="ApplicationData\NovaCorpModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModelNovaCorp.edmx</DependentUpon>
+      <DependentUpon>NovaCorpModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="ApplicationData\OrderItems.cs">
-      <DependentUpon>ModelNovaCorp.tt</DependentUpon>
+      <DependentUpon>NovaCorpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ApplicationData\Orders.cs">
-      <DependentUpon>ModelNovaCorp.tt</DependentUpon>
+      <DependentUpon>NovaCorpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ApplicationData\Products.cs">
-      <DependentUpon>ModelNovaCorp.tt</DependentUpon>
+      <DependentUpon>NovaCorpModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ApplicationData\Stock.cs">
-      <DependentUpon>ModelNovaCorp.tt</DependentUpon>
+      <DependentUpon>NovaCorpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationData\sysdiagrams.cs">
+      <DependentUpon>NovaCorpModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BusinessLogic\OrderStatusValidator.cs" />
+    <Compile Include="Dialogs\CompleteWorkDialog.xaml.cs">
+      <DependentUpon>CompleteWorkDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\OrderDetailsDialog.xaml.cs">
+      <DependentUpon>OrderDetailsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TypeToVisibilityConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -117,6 +138,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\Admin\AdminDashboard\AdminDashboardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Admin\AdminInstallations\AdminInstallationsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -137,6 +162,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Guest\GuestProductDetails\GuestProductDetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Installer\InstallerActiveOrders\InstallerActiveOrdersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Installer\InstallerDashboard\InstallerDashboardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Installer\InstallerHistory\InstallerHistoryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,6 +198,9 @@
     <Compile Include="Pages\Admin\AdminDashboard\AdminDashboardPage.xaml.cs">
       <DependentUpon>AdminDashboardPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Admin\AdminInstallations\AdminInstallationsPage.xaml.cs">
+      <DependentUpon>AdminInstallationsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Admin\AdminProducts\AdminProductsPage.xaml.cs">
       <DependentUpon>AdminProductsPage.xaml</DependentUpon>
     </Compile>
@@ -175,6 +215,15 @@
     </Compile>
     <Compile Include="Pages\Guest\GuestProductDetails\GuestProductDetailsPage.xaml.cs">
       <DependentUpon>GuestProductDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Installer\InstallerActiveOrders\InstallerActiveOrdersPage.xaml.cs">
+      <DependentUpon>InstallerActiveOrdersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Installer\InstallerDashboard\InstallerDashboardPage.xaml.cs">
+      <DependentUpon>InstallerDashboardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Installer\InstallerHistory\InstallerHistoryPage.xaml.cs">
+      <DependentUpon>InstallerHistoryPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Manager\ManagerClientSearch\ManagerClientSearchPage.xaml.cs">
       <DependentUpon>ManagerClientSearchPage.xaml</DependentUpon>
@@ -205,12 +254,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="ApplicationData\ModelNovaCorp.edmx">
+    <EntityDeploy Include="ApplicationData\NovaCorpModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ModelNovaCorp.Designer.cs</LastGenOutput>
+      <LastGenOutput>NovaCorpModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="ApplicationData\ModelNovaCorp.edmx.diagram">
-      <DependentUpon>ModelNovaCorp.edmx</DependentUpon>
+    <None Include="ApplicationData\NovaCorpModel.edmx.diagram">
+      <DependentUpon>NovaCorpModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -225,18 +274,19 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="ApplicationData\ModelNovaCorp.Context.tt">
+    <Content Include="ApplicationData\NovaCorpModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelNovaCorp.edmx</DependentUpon>
-      <LastGenOutput>ModelNovaCorp.Context.cs</LastGenOutput>
+      <DependentUpon>NovaCorpModel.edmx</DependentUpon>
+      <LastGenOutput>NovaCorpModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="ApplicationData\ModelNovaCorp.tt">
+    <Content Include="ApplicationData\NovaCorpModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelNovaCorp.edmx</DependentUpon>
-      <LastGenOutput>ModelNovaCorp.cs</LastGenOutput>
+      <DependentUpon>NovaCorpModel.edmx</DependentUpon>
+      <LastGenOutput>NovaCorpModel.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resources\logo.png" />
     <Resource Include="Resources\no-image.png" />
     <Resource Include="Resources\products\uslugi.jpg" />
@@ -259,5 +309,6 @@
     <Resource Include="Resources\products\yandex_mini.jpg" />
     <Resource Include="Resources\products\yeelight_color.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

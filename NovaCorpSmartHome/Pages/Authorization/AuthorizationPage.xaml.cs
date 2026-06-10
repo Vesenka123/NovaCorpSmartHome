@@ -62,6 +62,9 @@ namespace NovaCorpSmartHome.Pages.Authorization
                         case "Менеджер":
                             AppFrame.FrameMain.Navigate(new Pages.Manager.ManagerDashboard.ManagerDashboardPage());
                             break;
+                        case "Установщик":
+                            AppFrame.FrameMain.Navigate(new Pages.Installer.InstallerDashboardPage());
+                            break;
                         default:
                             // На случай, если роль не распознана — гостевой режим
                             AppFrame.FrameMain.Navigate(new Pages.Guest.GuestCatalog.GuestCatalogPage());

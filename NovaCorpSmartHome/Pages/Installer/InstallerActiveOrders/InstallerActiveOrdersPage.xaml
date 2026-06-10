@@ -1,0 +1,372 @@
+﻿<Page x:Class="NovaCorpSmartHome.Pages.Installer.InstallerActiveOrders.InstallerActiveOrdersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:NovaCorpSmartHome.Pages.Installer.InstallerActiveOrders"
+      mc:Ignorable="d" 
+      Title="Активные заказы - Новус"
+      Background="{StaticResource BgColor}"
+      Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <!-- Стиль для заголовков колонок -->
+        <Style x:Key="ModernHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="Height" Value="50"/>
+        </Style>
+
+        <!-- Стиль для ячеек -->
+        <Style x:Key="ModernCellStyle" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="MinHeight" Value="50"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#334155"/>
+        </Style>
+
+        <!-- Стиль для кнопки назад -->
+        <Style x:Key="BackButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#3B82F6"/>
+            <Setter Property="BorderBrush" Value="#3B82F6"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="MinWidth" Value="100"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"
+                                            Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#EFF6FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <Border Grid.Row="0" Background="White" CornerRadius="12" Padding="20" Margin="0,0,0,20" Effect="{StaticResource CardShadow}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="#10B981" Width="50" Height="50" CornerRadius="10" Margin="0,0,15,0">
+                    <TextBlock Text="🔧" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Мои активные заказы (Новус)" FontSize="20" FontWeight="SemiBold" Foreground="#1E293B"/>
+                    <TextBlock x:Name="txtStatistics" Text="Загрузка данных..." FontSize="13" Foreground="#64748B" Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <Button Grid.Column="2" Content="← Назад" Style="{StaticResource BackButtonStyle}" Click="btnBack_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Таблица заказов -->
+        <Border Grid.Row="1" Background="White" CornerRadius="12" Effect="{StaticResource CardShadow}" Padding="0">
+            <Grid>
+                <DataGrid x:Name="dgOrders" 
+                          AutoGenerateColumns="False" 
+                          IsReadOnly="True" 
+                          SelectionMode="Single" 
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          HorizontalGridLinesBrush="#F1F5F9"
+                          RowHeaderWidth="0"
+                          BorderThickness="0"
+                          Background="White"
+                          CanUserSortColumns="True"
+                          Sorting="dgOrders_Sorting">
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="MinHeight" Value="60"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#F8FAFC"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#EFF6FF"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell" BasedOn="{StaticResource ModernCellStyle}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#EFF6FF"/>
+                                    <Setter Property="Foreground" Value="#1E40AF"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+
+                    <DataGrid.Columns>
+                        <!-- № Заказа -->
+                        <DataGridTextColumn Header="№" 
+                                           Binding="{Binding Orders.Id}" 
+                                           Width="70"
+                                           IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Foreground" Value="#3B82F6"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Клиент -->
+                        <DataGridTemplateColumn Header="Клиент" Width="2*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="8,8">
+                                        <TextBlock FontWeight="SemiBold" FontSize="13" Foreground="#1E293B">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="Orders.Customers.LastName"/>
+                                                    <Binding Path="Orders.Customers.FirstName"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock FontSize="11" Foreground="#64748B" Margin="0,4,0,0">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="📞 {0}">
+                                                    <Binding Path="Orders.Customers.Phone"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Адрес -->
+                        <DataGridTemplateColumn Header="Адрес установки" Width="3*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="8,8">
+                                        <TextBlock Text="{Binding Orders.Customers.Address}" 
+                                                   FontSize="13" 
+                                                   Foreground="#334155"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Плановая дата -->
+                        <DataGridTemplateColumn Header="Плановая дата" Width="110">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="8,8" HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding PlanDate, StringFormat='dd.MM.yyyy'}" 
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#1E293B"
+                                                   HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding PlanDate, StringFormat='dddd'}" 
+                                                   FontSize="10"
+                                                   Foreground="#64748B"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Начало работ -->
+                        <DataGridTemplateColumn Header="Начало работ" Width="130">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="8,8" HorizontalAlignment="Center">
+                                        <TextBlock FontSize="13" Foreground="#334155">
+                                            <TextBlock.Text>
+                                                <Binding Path="StartDate" StringFormat="dd.MM.yyyy HH:mm" FallbackValue="—" TargetNullValue="—"/>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Статус -->
+                        <DataGridTemplateColumn Header="Статус" Width="150">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Padding="6,5" CornerRadius="8" Margin="8,8" HorizontalAlignment="Center" MinWidth="90">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="#F3F4F6"/>
+                                                <Setter Property="TextElement.Foreground" Value="#374151"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Ожидает установки">
+                                                        <Setter Property="Background" Value="#FEF3C7"/>
+                                                        <Setter Property="TextElement.Foreground" Value="#D97706"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Назначена">
+                                                        <Setter Property="Background" Value="#FEF3C7"/>
+                                                        <Setter Property="TextElement.Foreground" Value="#D97706"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="В работе">
+                                                        <Setter Property="Background" Value="#DBEAFE"/>
+                                                        <Setter Property="TextElement.Foreground" Value="#2563EB"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Завершена">
+                                                        <Setter Property="Background" Value="#D1FAE5"/>
+                                                        <Setter Property="TextElement.Foreground" Value="#059669"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding Status}" 
+                                                   HorizontalAlignment="Center" 
+                                                   FontWeight="SemiBold" 
+                                                   FontSize="11"
+                                                   TextAlignment="Center"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- НОВАЯ КОЛОНКА: Подробнее -->
+                        <DataGridTemplateColumn Header="Инфо" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="ℹ️" Tag="{Binding}" Click="btnDetails_Click"
+                                            Width="40" Height="30" Background="#E0F2FE" Foreground="#0284C7"
+                                            BorderThickness="0" Cursor="Hand" ToolTip="Посмотреть детали заказа и комментарии менеджера">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#BAE6FD"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Кнопка действия (Начать/Завершить) -->
+                        <DataGridTemplateColumn Header="Действие" Width="120">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4">
+                                        <Button Tag="{Binding}" Click="btnAction_Click" Height="36" Width="100"
+                                                FontWeight="SemiBold" FontSize="11" Cursor="Hand" BorderThickness="0">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Background" Value="#F59E0B"/>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                    <Setter Property="Content" Value="▶ Начать"/>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,6"/>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="В работе">
+                                                            <Setter Property="Background" Value="#10B981"/>
+                                                            <Setter Property="Content" Value="✓ Завершить"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Завершена">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Opacity" Value="0.9"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed" Value="True">
+                                                            <Setter Property="Opacity" Value="0.8"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Панель загрузки -->
+                <Border x:Name="loadingPanel" 
+                        Background="#FFFFFF" 
+                        Visibility="Collapsed"
+                        CornerRadius="12">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ProgressBar IsIndeterminate="True" Width="200" Height="20" Margin="0,0,0,10"/>
+                        <TextBlock Text="Загрузка данных..." FontSize="14" Foreground="#64748B"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Пустое состояние -->
+                <Border x:Name="emptyPanel" 
+                        Background="#FFFFFF" 
+                        Visibility="Collapsed"
+                        CornerRadius="12">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,60">
+                        <TextBlock Text="🔧" FontSize="64" Foreground="#CBD5E1" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Нет активных заказов" FontSize="16" FontWeight="SemiBold" Foreground="#475569" Margin="0,16,0,0"/>
+                        <TextBlock Text="Все заказы выполнены или еще не назначены" FontSize="13" Foreground="#94A3B8" Margin="0,8,0,0"/>
+                        <TextBlock Text="Ожидайте назначения новых заказов" FontSize="13" Foreground="#94A3B8"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

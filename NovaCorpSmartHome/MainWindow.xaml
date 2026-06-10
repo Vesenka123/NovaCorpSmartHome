@@ -58,7 +58,7 @@
                             </Border.OpacityMask>
                             <Image Source="/Resources/logo.png"/>
                         </Border>
-                        <TextBlock Text="NovaCorp" 
+                        <TextBlock Text="Новус" 
                                    FontSize="20" FontWeight="SemiBold" 
                                    Foreground="{StaticResource TextColor}" 
                                    VerticalAlignment="Center" 
@@ -121,7 +121,7 @@
                     BorderThickness="0,1,0,0" 
                     CornerRadius="0,0,16,16">
                 <Grid>
-                    <TextBlock Text="© 2026 NovaCorp Smart Home — Все права защищены" 
+                    <TextBlock Text="© 2026 Новус смарт дом — Все права защищены" 
                                FontSize="12" 
                                Foreground="{StaticResource TextSecondaryColor}"
                                VerticalAlignment="Center" 
